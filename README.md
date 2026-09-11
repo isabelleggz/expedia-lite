@@ -7,6 +7,10 @@ Expedia Lite is a small travel-search application with a FastAPI backend and a V
 - `backend/` — FastAPI service and API code.
 - `frontend/` — Vue client application.
 - `AGENTS.md` — project conventions for contributors and coding agents.
+- [`docs/design-pipeline.md`](docs/design-pipeline.md) — application boundaries and review flow.
+- [`docs/part-1-report.md`](docs/part-1-report.md) — Part 1 implementation and verification evidence.
+- [`prompts/`](prompts/) — reusable prompts from the project workflow.
+- [`handoffs/`](handoffs/) — project handoff notes.
 
 ## Getting started
 
