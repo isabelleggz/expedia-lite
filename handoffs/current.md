@@ -55,7 +55,7 @@ Important files:
 - `README.md`: project layout and setup requirements.
 - `docs/design-pipeline.md`: detailed boundary, file map, request flow, and
   agentic review loop.
-- `docs/part-1-report.md`: Part 1 repository, implementation, verification, and
+- `docs/report.md`: Part 1 repository, implementation, verification, and
   next-step report.
 - `docs/screenshots/`: successful-search and no-results browser evidence for the
   Part 1 report.
@@ -126,7 +126,7 @@ Documentation added after the exact application snapshot:
 - `README.md` links the design pipeline, Part 1 report, prompt library, and
   handoffs.
 - `docs/design-pipeline.md` documents architecture and the review loop.
-- `docs/part-1-report.md` records the submitted application commit, observed
+- `docs/report.md` records the submitted application commit, observed
   verification, screenshots, limitations, and next task.
 - `docs/screenshots/hotel-search-result.jpg` and
   `docs/screenshots/hotel-search-no-results.jpg` preserve browser evidence.

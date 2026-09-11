@@ -45,7 +45,7 @@ expedia-agent/
 |   `-- requirements.txt
 |-- docs/
 |   |-- design-pipeline.md
-|   |-- part-1-report.md
+|   |-- report.md
 |   |-- screenshots/
 |   |   |-- hotel-search-no-results.jpg
 |   |   `-- hotel-search-result.jpg
