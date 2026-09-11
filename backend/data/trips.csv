@@ -1,0 +1,13 @@
+trip_id,hotel_id,trip_name,check_in,check_out
+T001,H001,Boston Harbor Weekend,2026-09-18,2026-09-20
+T002,H002,Boston City Break,2026-09-18,2026-09-21
+T003,H003,New York Museum Weekend,2026-09-25,2026-09-27
+T004,H004,New York Riverside Stay,2026-09-25,2026-09-28
+T005,H005,Philadelphia History Weekend,2026-09-18,2026-09-20
+T006,H006,Philadelphia Arts Break,2026-10-02,2026-10-05
+T007,H007,Washington Museum Weekend,2026-09-25,2026-09-27
+T008,H008,State College Trail Weekend,2026-10-02,2026-10-04
+T009,H001,Boston Autumn Weekend,2026-10-02,2026-10-04
+T010,H002,Boston October Break,2026-10-09,2026-10-12
+T011,H003,New York October Weekend,2026-10-09,2026-10-11
+T012,H007,Washington Autumn Break,2026-10-09,2026-10-12

@@ -1,0 +1,9 @@
+hotel_id,hotel_name,city,state,nightly_rate_usd
+H001,Harbor Lantern Hotel,Boston,MA,150
+H002,Maple Square Inn,Boston,MA,120
+H003,Metro Garden Hotel,New York,NY,200
+H004,Riverside Studio Hotel,New York,NY,175
+H005,Liberty Lane Inn,Philadelphia,PA,110
+H006,Museum Walk Hotel,Philadelphia,PA,140
+H007,Capitol Grove Hotel,Washington,DC,160
+H008,Valley Trail Inn,State College,PA,100

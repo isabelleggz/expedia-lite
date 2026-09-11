@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+
+# Local installers and package caches
+.node-install/
+.npm-cache/
+
+# Python environments and generated files
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# Frontend dependencies and generated output
+node_modules/
+dist/
+coverage/
+.eslintcache
+
+# Local environment overrides and secrets
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
