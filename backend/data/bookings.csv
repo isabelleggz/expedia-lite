@@ -1,0 +1,7 @@
+booking_id,user_id,trip_id,booked_on,status
+B001,U001,T001,2026-09-01,confirmed
+B002,U001,T005,2026-09-02,cancelled
+B003,U002,T003,2026-09-03,confirmed
+B004,U003,T007,2026-09-04,confirmed
+B005,U004,T002,2026-09-05,confirmed
+B006,U005,T008,2026-09-07,cancelled

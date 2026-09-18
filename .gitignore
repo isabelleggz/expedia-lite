@@ -25,3 +25,8 @@ coverage/
 
 # Logs
 *.log
+
+# Local SQLite application data
+backend/data/*.sqlite3
+backend/data/*.sqlite3-shm
+backend/data/*.sqlite3-wal
