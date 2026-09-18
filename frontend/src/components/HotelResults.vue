@@ -31,81 +31,79 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 })
 
-const stayRows = computed(() =>
-  props.hotels.flatMap((hotel) =>
-    hotel.available_stays.map((stay) => ({
-      ...stay,
-      hotel_id: hotel.hotel_id,
-      hotel_name: hotel.hotel_name,
-      city: hotel.city,
-      state: hotel.state,
-      nightly_rate_usd: hotel.nightly_rate_usd,
-    })),
-  ),
+const totalStays = computed(() =>
+  props.hotels.reduce((count, hotel) => count + hotel.available_stays.length, 0),
 )
 </script>
 
 <template>
-  <section v-if="hasSearched" class="results-panel" aria-live="polite">
-    <template v-if="stayRows.length">
+  <section v-if="hasSearched" id="search-results" class="results-panel" aria-labelledby="results-title" aria-live="polite">
+    <template v-if="hotels.length">
       <div class="results-heading">
-        <h2>Available stays</h2>
-        <p>{{ stayRows.length }} {{ stayRows.length === 1 ? 'stay' : 'stays' }} found</p>
+        <div>
+          <p class="eyebrow">Your next getaway</p>
+          <h2 id="results-title">Stays for “{{ lastQuery }}”</h2>
+          <p>
+            {{ hotels.length }} {{ hotels.length === 1 ? 'hotel' : 'hotels' }} ·
+            {{ totalStays }} available {{ totalStays === 1 ? 'stay' : 'stays' }}
+          </p>
+        </div>
+        <span class="collection-pill">Expedia Lite collection</span>
       </div>
 
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Hotel ID</th>
-              <th scope="col">Hotel Name</th>
-              <th scope="col">City</th>
-              <th scope="col">State</th>
-              <th scope="col">Nightly Rate</th>
-              <th scope="col">Available Stay</th>
-              <th scope="col">Dates</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="stay in stayRows" :key="stay.trip_id">
-              <td><span class="record-id">{{ stay.hotel_id }}</span></td>
-              <td class="primary-value">{{ stay.hotel_name }}</td>
-              <td>{{ stay.city }}</td>
-              <td>{{ stay.state }}</td>
-              <td>{{ currencyFormatter.format(stay.nightly_rate_usd) }}</td>
-              <td>
-                <span class="primary-value">{{ stay.trip_name }}</span>
-                <span class="secondary-value">{{ stay.trip_id }}</span>
-              </td>
-              <td>
-                <time :datetime="stay.check_in">{{ stay.check_in }}</time>
-                <span aria-hidden="true">–</span>
-                <time :datetime="stay.check_out">{{ stay.check_out }}</time>
-              </td>
-              <td>
+      <div class="hotel-list">
+        <article v-for="hotel in hotels" :key="hotel.hotel_id" class="hotel-card">
+          <div class="hotel-summary">
+            <div class="hotel-illustration" aria-hidden="true">
+              <svg viewBox="0 0 48 48" role="img">
+                <path d="M8 29V18a4 4 0 0 1 4-4h24a4 4 0 0 1 4 4v11" />
+                <path d="M6 29h36v10H6zM12 23h10v6H12zM26 23h10v6H26z" />
+              </svg>
+            </div>
+            <div class="hotel-title-block">
+              <span class="record-id">{{ hotel.hotel_id }}</span>
+              <h3>{{ hotel.hotel_name }}</h3>
+              <p>{{ hotel.city }}, {{ hotel.state }}</p>
+            </div>
+            <div class="rate-block">
+              <strong>{{ currencyFormatter.format(hotel.nightly_rate_usd) }}</strong>
+              <span>per night</span>
+            </div>
+          </div>
+
+          <div class="available-stays">
+            <p class="available-label">Available stays</p>
+            <ul>
+              <li v-for="stay in hotel.available_stays" :key="stay.trip_id">
+                <div>
+                  <strong>{{ stay.trip_name }}</strong>
+                  <span>
+                    {{ stay.trip_id }} ·
+                    <time :datetime="stay.check_in">{{ stay.check_in }}</time>
+                    –
+                    <time :datetime="stay.check_out">{{ stay.check_out }}</time>
+                  </span>
+                </div>
                 <button
                   type="button"
                   class="compact-button"
                   :disabled="!selectedUserId || Boolean(busyTripId)"
-                  :aria-label="`Book ${stay.trip_name}`"
+                  :aria-label="`Book ${stay.trip_name} at ${hotel.hotel_name}`"
                   @click="emit('book', stay)"
                 >
-                  {{ busyTripId === stay.trip_id ? 'Booking…' : 'Book' }}
+                  {{ busyTripId === stay.trip_id ? 'Booking…' : 'Book stay' }}
                 </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </li>
+            </ul>
+          </div>
+        </article>
       </div>
     </template>
 
-    <p v-else-if="hotels.length" class="message inline-message empty-message" role="status">
-      Matching hotels have no available stays.
-    </p>
-
-    <p v-else class="message inline-message empty-message" role="status">
-      No hotels match “{{ lastQuery }}”. Try another hotel name.
-    </p>
+    <div v-else class="empty-state" role="status">
+      <span class="empty-state-mark" aria-hidden="true">⌁</span>
+      <h2 id="results-title">No stays found</h2>
+      <p>No hotels match “{{ lastQuery }}”. Try another full or partial hotel name.</p>
+    </div>
   </section>
 </template>

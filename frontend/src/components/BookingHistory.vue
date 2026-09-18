@@ -34,10 +34,17 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
   <section class="history-panel" aria-labelledby="history-title" aria-live="polite">
     <div class="section-heading">
       <div>
+        <p class="eyebrow">Saved trips</p>
         <h2 id="history-title">Booking history</h2>
-        <p>{{ travelerName }}</p>
+        <p>Confirmed and cancelled stays for {{ travelerName }}</p>
       </div>
-      <button type="button" class="secondary-button compact-button" :disabled="isLoading" @click="emit('refresh')">
+      <button
+        type="button"
+        class="secondary-button compact-button"
+        :disabled="isLoading"
+        aria-label="Refresh booking history"
+        @click="emit('refresh')"
+      >
         {{ isLoading ? 'Loading…' : 'Refresh history' }}
       </button>
     </div>
@@ -46,6 +53,7 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
 
     <div v-else-if="bookings.length" class="table-wrapper">
       <table>
+        <caption class="sr-only">Booking history for {{ travelerName }}</caption>
         <thead>
           <tr>
             <th scope="col">Booking ID</th>
@@ -95,20 +103,22 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
               </div>
 
               <div v-else class="action-group">
-                <button
-                  v-if="booking.status === 'confirmed'"
-                  type="button"
-                  class="secondary-button compact-button"
-                  :disabled="Boolean(busyBookingId)"
-                  @click="emit('cancel', booking)"
+                  <button
+                    v-if="booking.status === 'confirmed'"
+                    type="button"
+                    class="secondary-button compact-button"
+                    :disabled="Boolean(busyBookingId)"
+                    :aria-label="`Cancel booking ${booking.booking_id}`"
+                    @click="emit('cancel', booking)"
                 >
                   {{ busyBookingId === booking.booking_id ? 'Cancelling…' : 'Cancel' }}
                 </button>
-                <button
-                  type="button"
-                  class="danger-link compact-button"
-                  :disabled="Boolean(busyBookingId)"
-                  @click="emit('request-delete', booking)"
+                  <button
+                    type="button"
+                    class="danger-link compact-button"
+                    :disabled="Boolean(busyBookingId)"
+                    :aria-label="`Delete booking ${booking.booking_id}`"
+                    @click="emit('request-delete', booking)"
                 >
                   Delete
                 </button>
