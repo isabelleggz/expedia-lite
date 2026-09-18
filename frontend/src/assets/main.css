@@ -12,6 +12,7 @@
 
 .search-panel,
 .results-panel,
+.history-panel,
 .message {
   border: 1px solid #ded6ca;
   border-radius: 0.8rem;
@@ -21,6 +22,11 @@
 
 .search-panel {
   padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.traveler-field {
+  max-width: 28rem;
+  margin-bottom: 1.5rem;
 }
 
 .eyebrow {
@@ -54,7 +60,8 @@ h1 {
   font-size: 1rem;
 }
 
-.search-form label {
+.search-form label,
+.traveler-field label {
   display: block;
   margin-bottom: 0.5rem;
   color: #3f3035;
@@ -68,7 +75,8 @@ h1 {
   gap: 0.75rem;
 }
 
-input {
+input,
+select {
   width: 100%;
   min-height: 3rem;
   padding: 0.7rem 0.9rem;
@@ -76,12 +84,20 @@ input {
   border-radius: 0.5rem;
   background: #ffffff;
   color: #2e2528;
+  font: inherit;
 }
 
-input:focus-visible {
+input:focus-visible,
+select:focus-visible {
   border-color: #6b2947;
   outline: 3px solid rgba(107, 41, 71, 0.18);
   outline-offset: 1px;
+}
+
+.field-help {
+  margin: 0.45rem 0 0;
+  color: #74696c;
+  font-size: 0.82rem;
 }
 
 button {
@@ -109,12 +125,14 @@ button:disabled {
   opacity: 0.55;
 }
 
-.results-panel {
+.results-panel,
+.history-panel {
   margin-top: 1.5rem;
   overflow: hidden;
 }
 
-.results-heading {
+.results-heading,
+.section-heading {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -124,16 +142,20 @@ button:disabled {
 }
 
 .results-heading h2,
-.results-heading p {
+.results-heading p,
+.section-heading h2,
+.section-heading p {
   margin-bottom: 0;
 }
 
-.results-heading h2 {
+.results-heading h2,
+.section-heading h2 {
   color: #3f182b;
   font-size: 1.2rem;
 }
 
-.results-heading p {
+.results-heading p,
+.section-heading p {
   color: #74696c;
   font-size: 0.875rem;
 }
@@ -172,7 +194,7 @@ tbody tr:hover {
   background: #fdf8f2;
 }
 
-.hotel-id {
+.record-id {
   padding: 0.2rem 0.45rem;
   border-radius: 0.3rem;
   background: #eee5dc;
@@ -181,8 +203,98 @@ tbody tr:hover {
   font-size: 0.85rem;
 }
 
-.hotel-name {
+.primary-value {
+  display: block;
   color: #3f3035;
+  font-weight: 700;
+}
+
+.secondary-value {
+  display: block;
+  margin-top: 0.25rem;
+  color: #74696c;
+  font-size: 0.8rem;
+}
+
+.panel-state {
+  margin: 0;
+  padding: 1.5rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.status-confirmed {
+  background: #e1efe3;
+  color: #275a30;
+}
+
+.status-cancelled {
+  background: #eee5dc;
+  color: #655b5e;
+}
+
+.compact-button {
+  min-height: 2.25rem;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.82rem;
+}
+
+.secondary-button {
+  border-color: #8b7465;
+  background: #f5efe8;
+  color: #4b343c;
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: #e9ded2;
+}
+
+.danger-button {
+  border-color: #8a2727;
+  background: #8a2727;
+}
+
+.danger-button:hover:not(:disabled) {
+  background: #671d1d;
+}
+
+.danger-link {
+  border-color: #a75b5b;
+  background: #fff7f5;
+  color: #8a2727;
+}
+
+.danger-link:hover:not(:disabled) {
+  background: #f7e3df;
+}
+
+.action-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.delete-confirmation {
+  min-width: 15rem;
+  max-width: 21rem;
+  padding: 0.75rem;
+  border: 1px solid #d7a0a0;
+  border-radius: 0.5rem;
+  background: #fff7f5;
+  white-space: normal;
+}
+
+.delete-confirmation p {
+  margin-bottom: 0.65rem;
+  color: #671d1d;
+  font-size: 0.85rem;
   font-weight: 700;
 }
 
@@ -191,8 +303,20 @@ tbody tr:hover {
   padding: 1.25rem 1.5rem;
 }
 
+.inline-message {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .empty-message {
   color: #5f2341;
+}
+
+.success-message {
+  border-color: #9ebca3;
+  color: #275a30;
 }
 
 .error-message {

@@ -29,4 +29,24 @@ npm run dev
 
 Run the FastAPI development server and the Vue development server in separate terminals.
 
-The initial API includes `GET /health` as a service health check.
+Start the backend from `backend/` with:
+
+```sh
+.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+The backend creates `backend/data/expedia_lite.sqlite3` on its first start and
+imports the tracked hotel, trip, user, and booking CSV files in one transaction.
+A stored seed marker prevents later starts from overwriting updates, restoring
+deleted bookings, or duplicating records. The SQLite file is local generated data
+and is excluded from version control.
+
+The backend API includes:
+
+- `GET /health`
+- `GET /api/v1/hotels/search?hotel_name=...`
+- `GET /api/v1/users`
+- `POST /api/v1/bookings`
+- `GET /api/v1/users/{user_id}/bookings`
+- `PATCH /api/v1/bookings/{booking_id}`
+- `DELETE /api/v1/bookings/{booking_id}`
