@@ -1,5 +1,26 @@
 from fastapi.testclient import TestClient
 
+
+def test_health_reports_configuration_status_without_key_value(
+    client: TestClient,
+    monkeypatch,
+) -> None:
+    monkeypatch.setenv("GEOAPIFY_API_KEY", "health-check-test-key")
+
+    api_response = client.get("/api/health")
+    compatibility_response = client.get("/health")
+
+    expected = {
+        "status": "ok",
+        "geoapify_api_key": "key is configured",
+    }
+    assert api_response.status_code == 200
+    assert api_response.json() == expected
+    assert compatibility_response.status_code == 200
+    assert compatibility_response.json() == expected
+    assert "health-check-test-key" not in api_response.text
+
+
 def test_search_returns_matching_hotel_with_available_stays(
     client: TestClient,
 ) -> None:

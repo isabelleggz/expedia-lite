@@ -4,7 +4,7 @@ import { computed, onMounted, ref } from 'vue'
 import BookingHistory from './components/BookingHistory.vue'
 import DatePlannerDialog from './components/DatePlannerDialog.vue'
 import HotelResults from './components/HotelResults.vue'
-import TravelCategories from './components/TravelCategories.vue'
+import NearbyHotelSearch from './components/NearbyHotelSearch.vue'
 import {
   cancelBooking,
   createBooking,
@@ -201,7 +201,7 @@ onMounted(loadUsers)
       </div>
 
       <header class="site-header">
-        <a class="brand" href="#hotel-search" aria-label="Expedia Lite hotel search">
+        <a class="brand" href="#nearby-search" aria-label="Expedia Lite nearby hotel search">
           <span class="brand-mark" aria-hidden="true">EL</span>
           <span>Expedia Lite</span>
         </a>
@@ -209,22 +209,17 @@ onMounted(loadUsers)
       </header>
 
       <div class="hero-copy">
-        <p class="eyebrow light-eyebrow">A small stay finder for big weekends</p>
-        <h1 id="page-title">Room to roam.<br />A place to land.</h1>
-        <p>Search a handpicked collection of city stays, then keep every booking in one calm place.</p>
+        <h1 id="page-title">Book smart, rest easy.</h1>
+        <p class="hero-tagline">Explore your next getaway.</p>
       </div>
     </section>
 
     <div class="content-shell">
-      <section id="hotel-search" class="search-panel" aria-labelledby="search-title">
-        <TravelCategories />
-
+      <section id="booking-catalog" class="search-panel booking-search-panel" aria-labelledby="search-title">
         <div class="search-intro">
           <div>
-            <p class="eyebrow">Start with a name</p>
-            <h2 id="search-title">Find your next stay</h2>
+            <h2 id="search-title">Search for your next stay</h2>
           </div>
-          <p>Full or partial hotel names work.</p>
         </div>
 
         <form class="search-form" @submit.prevent="submitSearch">
@@ -241,7 +236,7 @@ onMounted(loadUsers)
                   name="hotel-name"
                   type="search"
                   autocomplete="off"
-                  placeholder="Try Inn or Trail"
+                  placeholder="Try Harbor Lantern"
                   required
                 />
               </span>
@@ -285,12 +280,10 @@ onMounted(loadUsers)
             </button>
           </div>
 
-          <p class="planning-note">
-            <span aria-hidden="true">✦</span>
-            Dates and travelers are planning preferences and do not filter hotel results. Only hotel name filters this collection.
-          </p>
         </form>
       </section>
+
+      <NearbyHotelSearch />
 
       <p v-if="successMessage" class="message success-message" role="status">
         {{ successMessage }}
@@ -303,9 +296,9 @@ onMounted(loadUsers)
       <aside class="stay-spotlight" aria-labelledby="spotlight-title">
         <div class="spotlight-art" aria-hidden="true"><span></span></div>
         <div class="spotlight-copy">
-          <p class="eyebrow">Stay spotlight</p>
-          <h2 id="spotlight-title">Trade the noise for a trail weekend.</h2>
-          <p>Valley Trail Inn puts State College and a slower pace within easy reach.</p>
+          <p class="eyebrow">Destination spotlight</p>
+          <h2 id="spotlight-title">Make room for a Valley Trail weekend.</h2>
+          <p>Discover Valley Trail Inn</p>
         </div>
         <button class="spotlight-button" type="button" @click="searchFeaturedStay">
           Find this stay <span aria-hidden="true">→</span>

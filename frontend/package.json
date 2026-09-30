@@ -12,6 +12,7 @@
     "lint:eslint": "eslint . --fix --cache"
   },
   "dependencies": {
+    "leaflet": "^1.9.4",
     "vue": "^3.5.40"
   },
   "devDependencies": {

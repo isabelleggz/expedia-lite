@@ -3,7 +3,43 @@
 from datetime import date
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+
+NearbyHotelErrorCode = Literal[
+    "invalid_zip",
+    "unresolved_zip",
+    "no_nearby_hotels",
+    "geoapify_not_configured",
+    "geoapify_unavailable",
+    "geoapify_rate_limited",
+]
+
+
+class NearbyHotelSearchQuery(BaseModel):
+    """Validated query values for a nearby-hotel search."""
+
+    zip: str = Field(pattern=r"^[0-9]{5}$")
+
+    @field_validator("zip", mode="before")
+    @classmethod
+    def strip_zip(cls, value: object) -> object:
+        """Ignore surrounding form whitespace without coercing the ZIP to a number."""
+
+        return value.strip() if isinstance(value, str) else value
+
+
+class ApiErrorDetail(BaseModel):
+    """Machine-readable error information for the nearby search."""
+
+    code: NearbyHotelErrorCode
+    message: str
+
+
+class ApiErrorResponse(BaseModel):
+    """Stable envelope for expected nearby-search failures."""
+
+    error: ApiErrorDetail
 
 
 class AvailableStayResponse(BaseModel):
@@ -37,6 +73,53 @@ class HotelSearchResponse(BaseModel):
     query: str
     count: int
     hotels: list[HotelResponse]
+
+
+class PostcodeLocationResponse(BaseModel):
+    """A resolved postcode location without hotel-specific pricing fields."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    postcode: str
+    country_code: str
+    latitude: float
+    longitude: float
+    locality: str | None = None
+
+
+class NearbyHotelSearchCenterResponse(BaseModel):
+    """The exact U.S. ZIP center used for the Places request."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    zip: str
+    locality: str | None = None
+    latitude: float
+    longitude: float
+
+
+class NearbyHotelPlaceResponse(BaseModel):
+    """Provider-supported place fields needed by the list and map."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    place_id: str
+    name: str | None = None
+    address: str | None = None
+    locality: str | None = None
+    region: str | None = None
+    postcode: str | None = None
+    latitude: float
+    longitude: float
+
+
+class NearbyHotelSearchResponse(BaseModel):
+    """Nearby provider places centered on one validated U.S. ZIP."""
+
+    zip: str
+    search_center: NearbyHotelSearchCenterResponse
+    count: int
+    hotels: list[NearbyHotelPlaceResponse]
 
 
 class UserResponse(BaseModel):

@@ -20,6 +20,8 @@ coverage/
 
 # Local environment overrides and secrets
 .env
+.env.*
+!.env.example
 .env.local
 .env.*.local
 

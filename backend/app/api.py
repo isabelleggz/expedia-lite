@@ -4,6 +4,8 @@ from pathlib import Path
 from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Query, Request, Response, status
+from fastapi.responses import JSONResponse
+from pydantic import ValidationError
 
 from .booking_service import (
     InvalidBookingError,
@@ -15,13 +17,32 @@ from .booking_service import (
     list_users as load_users,
     search_hotels_by_name,
 )
+from .nearby_hotel_search import (
+    NearbyHotelProviderError,
+    NearbyHotelRateLimitError,
+    NoNearbyHotelsError,
+    search_nearby_hotel_places as load_nearby_hotel_places,
+)
+from .postcode_lookup import (
+    PostcodeConfigurationError,
+    PostcodeNotFoundError,
+    PostcodeProviderError,
+    PostcodeRateLimitError,
+)
 from .schemas import (
+    ApiErrorDetail,
+    ApiErrorResponse,
     BookingCreateRequest,
     BookingHistoryResponse,
     BookingResponse,
     BookingStatusUpdateRequest,
     HotelResponse,
     HotelSearchResponse,
+    NearbyHotelErrorCode,
+    NearbyHotelPlaceResponse,
+    NearbyHotelSearchCenterResponse,
+    NearbyHotelSearchQuery,
+    NearbyHotelSearchResponse,
     UserListResponse,
     UserResponse,
 )
@@ -45,6 +66,15 @@ def _invalid_booking(error: InvalidBookingError) -> HTTPException:
     )
 
 
+def _nearby_search_error(
+    status_code: int,
+    code: NearbyHotelErrorCode,
+    message: str,
+) -> JSONResponse:
+    payload = ApiErrorResponse(error=ApiErrorDetail(code=code, message=message))
+    return JSONResponse(status_code=status_code, content=payload.model_dump())
+
+
 @router.get("/hotels/search", response_model=HotelSearchResponse)
 def search_hotels(
     request: Request,
@@ -60,6 +90,94 @@ def search_hotels(
         query=hotel_name,
         count=len(matches),
         hotels=[HotelResponse.model_validate(hotel) for hotel in matches],
+    )
+
+
+@router.get(
+    "/hotels/nearby",
+    response_model=NearbyHotelSearchResponse,
+    responses={
+        400: {"model": ApiErrorResponse, "description": "Invalid ZIP input"},
+        404: {
+            "model": ApiErrorResponse,
+            "description": "Unresolved ZIP or no nearby hotel places",
+        },
+        429: {
+            "model": ApiErrorResponse,
+            "description": "Geoapify quota or rate limit reached",
+        },
+        502: {
+            "model": ApiErrorResponse,
+            "description": "Geoapify request or response failure",
+        },
+        503: {
+            "model": ApiErrorResponse,
+            "description": "Geoapify is not configured",
+        },
+    },
+)
+def search_nearby_hotels(
+    zip_code: Annotated[
+        str | None,
+        Query(
+            alias="zip",
+            description="Exact five-digit U.S. ZIP code",
+        ),
+    ] = None,
+) -> NearbyHotelSearchResponse | JSONResponse:
+    """Return Geoapify hotel places within 5 km of an exact U.S. ZIP."""
+
+    try:
+        query = NearbyHotelSearchQuery.model_validate({"zip": zip_code})
+    except ValidationError:
+        return _nearby_search_error(
+            status.HTTP_400_BAD_REQUEST,
+            "invalid_zip",
+            "Enter a five-digit U.S. ZIP code.",
+        )
+
+    try:
+        result = load_nearby_hotel_places(query.zip)
+    except PostcodeConfigurationError:
+        return _nearby_search_error(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            "geoapify_not_configured",
+            "Location search is not configured yet.",
+        )
+    except PostcodeNotFoundError:
+        return _nearby_search_error(
+            status.HTTP_404_NOT_FOUND,
+            "unresolved_zip",
+            "We could not resolve that exact U.S. ZIP code.",
+        )
+    except NoNearbyHotelsError:
+        return _nearby_search_error(
+            status.HTTP_404_NOT_FOUND,
+            "no_nearby_hotels",
+            "No hotel places were returned within 5 km of that ZIP code.",
+        )
+    except (PostcodeRateLimitError, NearbyHotelRateLimitError):
+        return _nearby_search_error(
+            status.HTTP_429_TOO_MANY_REQUESTS,
+            "geoapify_rate_limited",
+            "Location search is temporarily rate-limited. Please try again later.",
+        )
+    except (PostcodeProviderError, NearbyHotelProviderError):
+        return _nearby_search_error(
+            status.HTTP_502_BAD_GATEWAY,
+            "geoapify_unavailable",
+            "Location search is temporarily unavailable. Please try again.",
+        )
+
+    return NearbyHotelSearchResponse(
+        zip=result.zip,
+        search_center=NearbyHotelSearchCenterResponse.model_validate(
+            result.search_center
+        ),
+        count=len(result.hotels),
+        hotels=[
+            NearbyHotelPlaceResponse.model_validate(hotel) for hotel in result.hotels
+        ],
     )
 
 

@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1500" viewBox="0 0 1600 1500" role="img" aria-labelledby="svg-title svg-desc">
+  <title id="svg-title">Expedia Lite Part 1 ZIP hotel-place search early design</title>
+  <desc id="svg-desc">Annotated wireframe showing a five-digit ZIP form, loading feedback, synchronized provider-place list and Leaflet map, selected item behavior, and distinct invalid, unresolved, empty, and request-failure states. All hotel content is explicitly placeholder provider data.</desc>
+
+  <defs>
+    <style>
+      .page { fill: #f5f4ee; }
+      .panel { fill: #ffffff; stroke: #cbd7d0; stroke-width: 2; }
+      .panel-soft { fill: #f0f5f1; stroke: #cbd7d0; stroke-width: 2; }
+      .selected { fill: #e5f1eb; stroke: #1f6652; stroke-width: 4; }
+      .input { fill: #ffffff; stroke: #6f8178; stroke-width: 2; }
+      .button { fill: #1f6652; }
+      .map { fill: #e9efe9; stroke: #98aaa0; stroke-width: 2; }
+      .road { fill: none; stroke: #ffffff; stroke-width: 16; stroke-linecap: round; opacity: 0.95; }
+      .road-edge { fill: none; stroke: #c9d7cf; stroke-width: 20; stroke-linecap: round; opacity: 0.8; }
+      .minor-road { fill: none; stroke: #ffffff; stroke-width: 8; stroke-linecap: round; }
+      .radius { fill: #88bda7; fill-opacity: 0.1; stroke: #397a63; stroke-width: 3; stroke-dasharray: 10 8; }
+      .marker { fill: #557368; stroke: #ffffff; stroke-width: 4; }
+      .marker-selected { fill: #bf4e3f; stroke: #ffffff; stroke-width: 5; }
+      .center { fill: #24463b; stroke: #ffffff; stroke-width: 4; }
+      .arrow { fill: none; stroke: #1f6652; stroke-width: 3; marker-end: url(#arrowhead); }
+      .divider { stroke: #d7dfda; stroke-width: 2; }
+      .title { font: 700 34px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #173a32; }
+      .section { font: 700 25px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #173a32; }
+      .heading { font: 700 20px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #173a32; }
+      .body { font: 400 17px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #31483f; }
+      .small { font: 400 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #55685f; }
+      .tiny { font: 400 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #55685f; }
+      .label { font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #43574e; letter-spacing: 1.2px; }
+      .button-text { font: 700 17px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .selected-text { font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1f6652; }
+      .danger { fill: #fff0ed; stroke: #ba4a3b; stroke-width: 2; }
+      .warning { fill: #fff6df; stroke: #a26b16; stroke-width: 2; }
+      .neutral { fill: #f2f4f3; stroke: #6d7c75; stroke-width: 2; }
+      .info { fill: #eaf3ee; stroke: #3f7863; stroke-width: 2; }
+      .danger-text { font: 700 17px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #8f3025; }
+      .warning-text { font: 700 17px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #7a4c08; }
+      .note { font: 600 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #315d4e; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 Z" fill="#1f6652"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#173a32" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect class="page" x="0" y="0" width="1600" height="1500"/>
+
+  <text class="title" x="50" y="58">Part 1 early design · ZIP-based hotel-place discovery</text>
+  <text class="body" x="50" y="90">One explicit search drives one normalized result set for both the list and Leaflet map.</text>
+  <rect x="1240" y="34" width="310" height="58" rx="16" fill="#e4ece7"/>
+  <text class="label" x="1264" y="58">CONTENT RULE</text>
+  <text class="small" x="1264" y="80">Provider facts only · no booking claims</text>
+
+  <!-- Search and loading -->
+  <rect class="panel" x="50" y="120" width="1500" height="205" rx="22" filter="url(#shadow)"/>
+  <text class="section" x="80" y="160">1 · ZIP input and loading feedback</text>
+  <text class="label" x="80" y="197">FIVE-DIGIT U.S. ZIP</text>
+  <rect class="input" x="80" y="212" width="440" height="66" rx="12"/>
+  <text class="heading" x="105" y="253">02108</text>
+  <rect class="button" x="540" y="212" width="210" height="66" rx="33"/>
+  <text class="button-text" x="593" y="253">Search hotels</text>
+  <text class="small" x="80" y="303">Submit only after exactly five digits; server validation remains authoritative.</text>
+
+  <rect class="panel-soft" x="810" y="178" width="700" height="115" rx="16"/>
+  <circle cx="853" cy="222" r="18" fill="none" stroke="#1f6652" stroke-width="5" stroke-dasharray="28 18"/>
+  <text class="heading" x="890" y="218">Searching…</text>
+  <text class="body" x="890" y="247">Searching for hotel places within 5 km of ZIP 02108…</text>
+  <text class="small" x="890" y="273">Clear previous cards, markers, and selection; disable duplicate submit.</text>
+
+  <!-- Populated state -->
+  <rect class="panel" x="50" y="350" width="1500" height="650" rx="22" filter="url(#shadow)"/>
+  <text class="section" x="80" y="390">2 · Populated result: shared selection between list and map</text>
+  <text class="body" x="80" y="418">Hotel places near 02108 · places may be incomplete · no rooms, rates, ratings, availability, or booking</text>
+
+  <text class="label" x="80" y="458">RESULT LIST · SAME PLACE IDS AS MARKERS</text>
+  <rect class="selected" x="80" y="476" width="535" height="128" rx="16"/>
+  <rect x="101" y="496" width="46" height="46" rx="23" fill="#1f6652"/>
+  <text class="button-text" x="118" y="527">A</text>
+  <text class="selected-text" x="165" y="503">SELECTED</text>
+  <text class="heading" x="165" y="530">Provider hotel name</text>
+  <text class="body" x="165" y="558">Formatted address if supplied</text>
+  <text class="small" x="165" y="583">Locality · Region · ZIP (only fields present)</text>
+
+  <rect class="panel-soft" x="80" y="620" width="535" height="110" rx="16"/>
+  <rect x="101" y="640" width="42" height="42" rx="21" fill="#557368"/>
+  <text class="button-text" x="115" y="669">B</text>
+  <text class="heading" x="165" y="654">Provider hotel name</text>
+  <text class="body" x="165" y="681">Formatted address if supplied</text>
+  <text class="small" x="165" y="706">No commercial or booking fields</text>
+
+  <rect class="panel-soft" x="80" y="746" width="535" height="110" rx="16"/>
+  <rect x="101" y="766" width="42" height="42" rx="21" fill="#557368"/>
+  <text class="button-text" x="115" y="795">C</text>
+  <text class="heading" x="165" y="780">Provider hotel name</text>
+  <text class="body" x="165" y="807">Address not provided</text>
+  <text class="small" x="165" y="832">Missing provider data stays explicit</text>
+
+  <rect class="info" x="80" y="875" width="535" height="80" rx="14"/>
+  <text class="note" x="102" y="905">List → map: select card, pan marker into view, open popup.</text>
+  <text class="note" x="102" y="934">Map → list: select marker, highlight and reveal matching card.</text>
+
+  <!-- Schematic map -->
+  <text class="label" x="675" y="458">LEAFLET MAP · 5 KM AROUND GEOCODED ZIP CENTER</text>
+  <rect class="map" x="675" y="476" width="835" height="479" rx="16"/>
+  <path class="road-edge" d="M715 535 C850 610, 980 545, 1120 620 S1370 720, 1480 650"/>
+  <path class="road" d="M715 535 C850 610, 980 545, 1120 620 S1370 720, 1480 650"/>
+  <path class="road-edge" d="M815 925 C875 760, 960 685, 1080 520"/>
+  <path class="road" d="M815 925 C875 760, 960 685, 1080 520"/>
+  <path class="minor-road" d="M700 780 C880 735, 1060 810, 1260 760 S1410 745, 1490 795"/>
+  <path class="minor-road" d="M1220 500 C1170 620, 1200 790, 1310 930"/>
+  <circle class="radius" cx="1090" cy="716" r="205"/>
+  <line x1="1068" y1="716" x2="1112" y2="716" stroke="#24463b" stroke-width="4"/>
+  <line x1="1090" y1="694" x2="1090" y2="738" stroke="#24463b" stroke-width="4"/>
+  <circle class="center" cx="1090" cy="716" r="10"/>
+  <text class="small" x="1110" y="741">ZIP center (not a hotel)</text>
+
+  <path class="marker-selected" d="M930 590 C903 590 886 609 886 633 C886 671 930 704 930 704 C930 704 974 671 974 633 C974 609 957 590 930 590 Z"/>
+  <circle cx="930" cy="631" r="17" fill="#ffffff"/>
+  <text class="heading" x="922" y="638">A</text>
+
+  <path class="marker" d="M1255 600 C1231 600 1216 617 1216 638 C1216 672 1255 701 1255 701 C1255 701 1294 672 1294 638 C1294 617 1279 600 1255 600 Z"/>
+  <circle cx="1255" cy="637" r="15" fill="#ffffff"/>
+  <text class="heading" x="1247" y="644">B</text>
+
+  <path class="marker" d="M1165 805 C1141 805 1126 822 1126 843 C1126 877 1165 906 1165 906 C1165 906 1204 877 1204 843 C1204 822 1189 805 1165 805 Z"/>
+  <circle cx="1165" cy="842" r="15" fill="#ffffff"/>
+  <text class="heading" x="1157" y="849">C</text>
+
+  <rect x="735" y="500" width="330" height="110" rx="14" fill="#ffffff" stroke="#bf4e3f" stroke-width="3" filter="url(#shadow)"/>
+  <text class="selected-text" x="758" y="528">A · SELECTED PLACE</text>
+  <text class="heading" x="758" y="555">Provider hotel name</text>
+  <text class="small" x="758" y="581">Provider address if supplied</text>
+  <path class="arrow" d="M930 610 C920 575, 930 565, 970 560"/>
+
+  <rect x="695" y="900" width="795" height="38" rx="10" fill="#ffffff" fill-opacity="0.92"/>
+  <text class="tiny" x="714" y="924">Schematic map — not actual geography</text>
+  <a href="https://www.openstreetmap.org/copyright">
+    <text class="tiny" x="1180" y="924">© OpenStreetMap contributors</text>
+  </a>
+  <a href="https://www.geoapify.com/">
+    <text class="tiny" x="1370" y="924">Powered by Geoapify</text>
+  </a>
+
+  <path class="arrow" d="M620 535 C646 535, 650 545, 672 565"/>
+  <path class="arrow" d="M672 685 C650 710, 642 710, 620 698"/>
+  <text class="tiny" x="624" y="518">select row</text>
+  <text class="tiny" x="624" y="736">select marker</text>
+
+  <!-- Error and empty states -->
+  <text class="section" x="50" y="1045">3 · Distinct empty and error states</text>
+
+  <rect class="danger" x="50" y="1070" width="350" height="300" rx="20"/>
+  <circle cx="95" cy="1120" r="24" fill="#ba4a3b"/>
+  <text class="button-text" x="87" y="1127">×</text>
+  <text class="heading" x="130" y="1118">Invalid ZIP</text>
+  <text class="label" x="80" y="1170">LOCAL VALIDATION · NO REQUEST</text>
+  <text class="danger-text" x="80" y="1210">Enter a five-digit</text>
+  <text class="danger-text" x="80" y="1235">U.S. ZIP code.</text>
+  <rect class="input" x="80" y="1265" width="285" height="60" rx="10"/>
+  <text class="body" x="102" y="1303">12A4</text>
+  <text class="small" x="80" y="1350">Keep focus with the field.</text>
+
+  <rect class="warning" x="425" y="1070" width="350" height="300" rx="20"/>
+  <circle cx="470" cy="1120" r="24" fill="#a26b16"/>
+  <text class="button-text" x="463" y="1127">?</text>
+  <text class="heading" x="505" y="1118">Unresolved ZIP</text>
+  <text class="label" x="455" y="1170">VALID SYNTAX · NO EXACT U.S. MATCH</text>
+  <text class="warning-text" x="455" y="1210">We could not find that</text>
+  <text class="warning-text" x="455" y="1235">U.S. ZIP code.</text>
+  <text class="body" x="455" y="1285">No Places request follows.</text>
+  <text class="small" x="455" y="1350">Different from provider failure.</text>
+
+  <rect class="neutral" x="800" y="1070" width="350" height="300" rx="20"/>
+  <circle cx="845" cy="1120" r="24" fill="#6d7c75"/>
+  <text class="button-text" x="836" y="1127">∅</text>
+  <text class="heading" x="880" y="1118">No nearby hotels</text>
+  <text class="label" x="830" y="1170">VALID ZIP · SUCCESSFUL EMPTY RESULT</text>
+  <text class="heading" x="830" y="1210">No hotel places returned</text>
+  <text class="heading" x="830" y="1237">within 5 km of {ZIP}.</text>
+  <text class="body" x="830" y="1285">Show ZIP center only.</text>
+  <text class="small" x="830" y="1350">Do not claim no hotels exist.</text>
+
+  <rect class="danger" x="1175" y="1070" width="375" height="300" rx="20"/>
+  <circle cx="1220" cy="1120" r="24" fill="#ba4a3b"/>
+  <text class="button-text" x="1215" y="1127">!</text>
+  <text class="heading" x="1255" y="1118">Request failure</text>
+  <text class="label" x="1205" y="1170">NETWORK · QUOTA · PROVIDER · CONFIG</text>
+  <text class="danger-text" x="1205" y="1210">Location search is temporarily</text>
+  <text class="danger-text" x="1205" y="1235">unavailable. Please try again.</text>
+  <rect class="button" x="1205" y="1270" width="140" height="52" rx="26"/>
+  <text class="button-text" x="1245" y="1303">Retry</text>
+  <text class="small" x="1205" y="1350">Preserve the entered ZIP; clear stale results.</text>
+
+  <rect x="50" y="1405" width="1500" height="62" rx="15" fill="#e4ece7"/>
+  <text class="note" x="78" y="1434">Every state uses visible text and structure, not color alone.</text>
+  <text class="small" x="78" y="1458">The map remains secondary to the accessible result list; attribution stays visible and provider text is rendered safely.</text>
+</svg>

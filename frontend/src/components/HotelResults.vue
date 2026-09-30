@@ -47,8 +47,11 @@ const totalStays = computed(() =>
             {{ hotels.length }} {{ hotels.length === 1 ? 'hotel' : 'hotels' }} ·
             {{ totalStays }} available {{ totalStays === 1 ? 'stay' : 'stays' }}
           </p>
+          <p class="catalog-disclaimer">
+            Supplied local records only; these prices and booking controls do not apply to live map places.
+          </p>
         </div>
-        <span class="collection-pill">Expedia Lite collection</span>
+        <span class="collection-pill">Demo booking catalog</span>
       </div>
 
       <div class="hotel-list">

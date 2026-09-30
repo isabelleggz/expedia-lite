@@ -36,7 +36,6 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
       <div>
         <p class="eyebrow">Saved trips</p>
         <h2 id="history-title">Booking history</h2>
-        <p>Confirmed and cancelled stays for {{ travelerName }}</p>
       </div>
       <button
         type="button"

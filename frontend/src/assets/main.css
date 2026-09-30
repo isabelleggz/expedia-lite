@@ -181,12 +181,12 @@ button:disabled {
   line-height: 0.91;
 }
 
-.hero-copy > p:last-child {
+.hero-tagline {
   max-width: 38rem;
-  margin: 0;
+  margin: 0.9rem 0 0;
   color: rgba(255, 255, 255, 0.84);
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  line-height: 1.65;
+  font-size: 12pt;
+  line-height: 1.5;
 }
 
 .eyebrow {
@@ -224,9 +224,12 @@ button:disabled {
   overflow: hidden;
 }
 
+.booking-search-panel {
+  margin-top: 2rem;
+}
+
 .travel-categories {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: flex;
   border-bottom: 1px solid #e2e8e0;
   background: #fbfcf8;
 }
@@ -250,6 +253,7 @@ button:disabled {
   font-size: 0.84rem;
   font-weight: 760;
   text-decoration: none;
+  width: 9rem;
 }
 
 .category-item:last-child {
@@ -271,11 +275,6 @@ button:disabled {
   border-radius: 999px 999px 0 0;
   background: #e86d48;
   content: '';
-}
-
-.category-item:disabled {
-  color: #8c9692;
-  opacity: 1;
 }
 
 .category-icon {
@@ -304,13 +303,6 @@ button:disabled {
   stroke-width: 2.5;
 }
 
-.external-mark {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.85rem;
-  font-size: 0.8rem;
-}
-
 .search-intro {
   display: flex;
   padding: 1.65rem 2rem 0.6rem;
@@ -332,13 +324,7 @@ button:disabled {
 }
 
 .search-intro h2 {
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-}
-
-.search-intro > p {
-  margin: 0 0 0.2rem;
-  color: #68736f;
-  font-size: 0.9rem;
+  font-size: 40px;
 }
 
 .search-form {
@@ -462,20 +448,6 @@ button:disabled {
   background: #b94b30;
 }
 
-.planning-note {
-  display: flex;
-  margin: 0.85rem 0 0;
-  align-items: flex-start;
-  gap: 0.45rem;
-  color: #68736f;
-  font-size: 0.84rem;
-  line-height: 1.5;
-}
-
-.planning-note span {
-  color: #d85f3d;
-}
-
 .message {
   margin: 1.25rem 0 0;
   padding: 1rem 1.2rem;
@@ -510,42 +482,46 @@ button:disabled {
 .spotlight-art {
   position: relative;
   display: grid;
-  width: 5.2rem;
-  height: 5.2rem;
+  width: 5.8rem;
+  height: 5.8rem;
   overflow: hidden;
   border-radius: 50%;
-  background: linear-gradient(160deg, #fdf1bc 0 48%, #7fa68f 49% 67%, #355f50 68%);
+  background:
+    radial-gradient(circle at 76% 20%, #fff2ad 0 0.58rem, transparent 0.62rem),
+    linear-gradient(#b2d5cf 0 58%, #668b76 59% 100%);
   place-items: end center;
 }
 
 .spotlight-art::before,
 .spotlight-art::after {
   position: absolute;
-  bottom: 1.15rem;
-  width: 1rem;
-  height: 2.2rem;
-  clip-path: polygon(50% 0, 100% 62%, 72% 62%, 100% 100%, 0 100%, 28% 62%, 0 62%);
-  background: #214d40;
+  bottom: 0.55rem;
+  width: 1.65rem;
+  height: 3.6rem;
+  clip-path: polygon(50% 0, 70% 30%, 61% 30%, 82% 56%, 67% 56%, 92% 84%, 59% 84%, 59% 100%, 41% 100%, 41% 84%, 8% 84%, 33% 56%, 18% 56%, 39% 30%, 30% 30%);
+  background: #2f6857;
   content: '';
 }
 
 .spotlight-art::before {
-  left: 1rem;
+  left: 0.9rem;
 }
 
 .spotlight-art::after {
-  right: 0.8rem;
-  height: 2.8rem;
+  right: 0.75rem;
+  height: 4.25rem;
+  background: #174b3f;
 }
 
 .spotlight-art span {
   position: absolute;
-  bottom: 0;
-  width: 0.6rem;
-  height: 3.2rem;
-  border-radius: 50% 50% 0 0;
-  background: #e9e4c7;
-  transform: rotate(15deg);
+  z-index: 1;
+  bottom: 0.45rem;
+  left: 2.15rem;
+  width: 1.7rem;
+  height: 3.15rem;
+  clip-path: polygon(50% 0, 70% 30%, 61% 30%, 82% 56%, 67% 56%, 92% 84%, 59% 84%, 59% 100%, 41% 100%, 41% 84%, 8% 84%, 33% 56%, 18% 56%, 39% 30%, 30% 30%);
+  background: #477d66;
 }
 
 .spotlight-copy h2 {
@@ -608,6 +584,14 @@ button:disabled {
 .section-heading p:not(.eyebrow) {
   margin: 0;
   color: #6c7772;
+}
+
+.results-heading .catalog-disclaimer {
+  max-width: 44rem;
+  margin-top: 0.45rem;
+  color: #7c4b34;
+  font-size: 0.8rem;
+  line-height: 1.45;
 }
 
 .collection-pill {
@@ -1096,11 +1080,6 @@ tbody tr:hover {
 
   .content-shell {
     margin-top: -4.4rem;
-  }
-
-  .travel-categories {
-    grid-template-columns: repeat(5, minmax(5.4rem, 1fr));
-    overflow-x: auto;
   }
 
   .category-item {
