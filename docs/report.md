@@ -138,8 +138,6 @@ Verification completed against the current working tree on 2026-09-29:
 | Shell with `pytest`, npm scripts, ESLint/Oxlint, and Vite | Deterministic command-line tools; no AI model | Ran backend tests, frontend lint, and the production build and supplied their exit/results evidence. |
 | Hand-authored SVG artifact | No generative model | Preserved the early design in [`part-1-mockup.svg`](part-1-mockup.svg); no image-generation model was used. |
 
-- Human submitter/reviewer: `<ADD NAME>`
-- Codex task/share link or exported transcript: `<ADD LINK OR FILE>`
 - Part 1 application commit: [`a46e89c`](https://github.com/isabelleggz/expedia-lite/commit/a46e89c5bc57e12a354893dd890bcb771bf10f0c)
 - Base branch and revision: `main` at [`5d18b4f`](https://github.com/isabelleggz/expedia-lite/commit/5d18b4f2bb681beb91e8b9efc16dd0b0e027c446)
 
